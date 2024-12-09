@@ -8,7 +8,9 @@ from vis import plot_model_comparison, plot_nn_training
 import numpy as np
 import plotly.graph_objs as go
 from plotly.subplots import make_subplots
+import os
 
+os.makedirs('emotion_plots', exist_ok=True)
 
 data_loader = EmotionDataLoader()
 X_train_full, X_test, y_train_full, y_test = data_loader.load_data(split_type="split")
@@ -89,12 +91,13 @@ classification_results = {
     }
 }
 
-
 fig_classification = plot_model_comparison(classification_results)
+fig_classification.write_image("emotion_plots/model_comparison.png")
 fig_classification.show()
 
 if hasattr(nn_model, 'history'):
     fig_nn = plot_nn_training(nn_model.history)
+    fig_nn.write_image("emotion_plots/neural_network_training.png")
     fig_nn.show()
 
 def predict_emotion(text, models):
